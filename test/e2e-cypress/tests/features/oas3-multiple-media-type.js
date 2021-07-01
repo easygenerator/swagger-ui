@@ -22,18 +22,22 @@ describe("OpenAPI 3.0 Multiple Media Types with different schemas", () => {
     cy.get(".opblock-section-request-body .content-type").as("selectMediaType")
   })
 
-  // In all cases, 
+  // In all cases,
   // - assume that examples are populated based on schema (not explicitly tested)
   // - assume validation passes based on successful "execute"
   // - expect final cURL command result doees not contain unexpected artifacts from other content-type schemas
   describe("multipart/form-data (only 'bar')", () => {
     it("should execute multipart/form-data", () => {
       cy.get("@selectMediaType")
-        .select(mediaTypeFormData)
-      cy.get("@executeBtn")
+        .select(mediaTypeUrlencoded)
+        .get("@executeBtn")
         .click()
-      // cURL component
-      cy.get(".responses-wrapper .curl-command")
+        .get("@selectMediaType")
+        .select(mediaTypeFormData)
+        .get("@executeBtn")
+        .click()
+        // cURL component
+        .get(".responses-wrapper .curl-command")
         .should("exist")
         .get(".responses-wrapper .curl-command span")
         .should("contains.text", "bar")
@@ -42,14 +46,14 @@ describe("OpenAPI 3.0 Multiple Media Types with different schemas", () => {
     it("should execute application/x-www-form-urlencoded THEN execute multipart/form-data", () => {
       cy.get("@selectMediaType")
         .select(mediaTypeUrlencoded)
-      cy.get("@executeBtn")
+        .get("@executeBtn")
         .click()
-      cy.get("@selectMediaType")
+        .get("@selectMediaType")
         .select(mediaTypeFormData)
-      cy.get("@executeBtn")
+        .get("@executeBtn")
         .click()
-      // cURL component
-      cy.get(".responses-wrapper .curl-command")
+        // cURL component
+        .get(".responses-wrapper .curl-command")
         .should("exist")
         .get(".responses-wrapper .curl-command span")
         .should("contains.text", "bar")
@@ -58,14 +62,14 @@ describe("OpenAPI 3.0 Multiple Media Types with different schemas", () => {
     it("should execute application/json THEN execute multipart/form-data", () => {
       cy.get("@selectMediaType")
         .select(mediaTypeJson)
-      cy.get("@executeBtn")
+        .get("@executeBtn")
         .click()
-      cy.get("@selectMediaType")
+        .get("@selectMediaType")
         .select(mediaTypeFormData)
-      cy.get("@executeBtn")
+        .get("@executeBtn")
         .click()
-      // cURL component
-      cy.get(".responses-wrapper .curl-command")
+        // cURL component
+        .get(".responses-wrapper .curl-command")
         .should("exist")
         .get(".responses-wrapper .curl-command span")
         .should("contains.text", "bar")
@@ -77,10 +81,10 @@ describe("OpenAPI 3.0 Multiple Media Types with different schemas", () => {
     it("should execute application/x-www-form-urlencoded", () => {
       cy.get("@selectMediaType")
         .select(mediaTypeUrlencoded)
-      cy.get("@executeBtn")
+        .get("@executeBtn")
         .click()
-      // cURL component
-      cy.get(".responses-wrapper .curl-command")
+        // cURL component
+        .get(".responses-wrapper .curl-command")
         .should("exist")
         .get(".responses-wrapper .curl-command span")
         .should("contains.text", "foo")
@@ -89,14 +93,14 @@ describe("OpenAPI 3.0 Multiple Media Types with different schemas", () => {
     it("should execute multipart/form-data THEN execute application/x-www-form-urlencoded", () => {
       cy.get("@selectMediaType")
         .select(mediaTypeFormData)
-      cy.get("@executeBtn")
+        .get("@executeBtn")
         .click()
-      cy.get("@selectMediaType")
+        .get("@selectMediaType")
         .select(mediaTypeUrlencoded)
-      cy.get("@executeBtn")
+        .get("@executeBtn")
         .click()
-      // cURL component
-      cy.get(".responses-wrapper .curl-command")
+        // cURL component
+        .get(".responses-wrapper .curl-command")
         .should("exist")
         .get(".responses-wrapper .curl-command span")
         .should("contains.text", "foo")
@@ -105,14 +109,14 @@ describe("OpenAPI 3.0 Multiple Media Types with different schemas", () => {
     it("should execute application/json THEN execute application/x-www-form-urlencoded", () => {
       cy.get("@selectMediaType")
         .select(mediaTypeJson)
-      cy.get("@executeBtn")
+        .get("@executeBtn")
         .click()
-      cy.get("@selectMediaType")
+        .get("@selectMediaType")
         .select(mediaTypeUrlencoded)
-      cy.get("@executeBtn")
+        .get("@executeBtn")
         .click()
-      // cURL component
-      cy.get(".responses-wrapper .curl-command")
+        // cURL component
+        .get(".responses-wrapper .curl-command")
         .should("exist")
         .get(".responses-wrapper .curl-command span")
         .should("contains.text", "foo")
@@ -126,12 +130,12 @@ describe("OpenAPI 3.0 Multiple Media Types with different schemas", () => {
       // final curl should have both "bar" and "foo"
       cy.get("@selectMediaType")
         .select(mediaTypeJson)
-      cy.get("@executeBtn")
+        .get("@executeBtn")
         .click()
-      cy.get("@executeBtn")
+        .get("@executeBtn")
         .click()
-      // cURL component
-      cy.get(".responses-wrapper .curl-command")
+        // cURL component
+        .get(".responses-wrapper .curl-command")
         .should("exist")
         .get(".responses-wrapper .curl-command span")
         .should("contains.text", "foo")
@@ -140,14 +144,14 @@ describe("OpenAPI 3.0 Multiple Media Types with different schemas", () => {
     it("should execute multipart/form-data THEN execute application/json", () => {
       cy.get("@selectMediaType")
         .select(mediaTypeFormData)
-      cy.get("@executeBtn")
+        .get("@executeBtn")
         .click()
-      cy.get("@selectMediaType")
+        .get("@selectMediaType")
         .select(mediaTypeJson)
-      cy.get("@executeBtn")
+        .get("@executeBtn")
         .click()
-      // cURL component
-      cy.get(".responses-wrapper .curl-command")
+        // cURL component
+        .get(".responses-wrapper .curl-command")
         .should("exist")
         .get(".responses-wrapper .curl-command span")
         .should("contains.text", "foo")
@@ -157,14 +161,14 @@ describe("OpenAPI 3.0 Multiple Media Types with different schemas", () => {
       // final curl should have both "bar" and "foo"
       cy.get("@selectMediaType")
         .select(mediaTypeUrlencoded)
-      cy.get("@executeBtn")
+        .get("@executeBtn")
         .click()
-      cy.get("@selectMediaType")
+        .get("@selectMediaType")
         .select(mediaTypeJson)
-      cy.get("@executeBtn")
+        .get("@executeBtn")
         .click()
-      // cURL component
-      cy.get(".responses-wrapper .curl-command")
+        // cURL component
+        .get(".responses-wrapper .curl-command")
         .should("exist")
         .get(".responses-wrapper .curl-command span")
         .should("contains.text", "foo")
